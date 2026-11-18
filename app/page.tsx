@@ -48,7 +48,7 @@ export default function NavigationMap() {
           clearInterval(interval); // Koniec trasy
           return prev;
         });
-      }, 150); // Szybkość pokazywania punktów (150ms)
+      }, 350); // Szybkość pokazywania punktów (150ms)
       
       return () => clearInterval(interval);
     } else {
@@ -126,20 +126,22 @@ export default function NavigationMap() {
         }
 
         // Rysujemy kółko punktu
-        ctx.beginPath();
-        ctx.arc(posX, posY, radius, 0, 2 * Math.PI);
-        ctx.fillStyle = fillColor;
-        ctx.fill();
-        ctx.strokeStyle = "#ffffff";
-        ctx.lineWidth = 2;
-        ctx.stroke();
+        if (index === 0 || index === route.path.length - 1) {
+          ctx.beginPath();
+          ctx.arc(posX, posY, radius, 0, 2 * Math.PI);
+          ctx.fillStyle = fillColor;
+          ctx.fill();
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.stroke();
 
-        // Dodajemy numerek kroku wewnątrz punktu
-        ctx.fillStyle = (index === 0 || index === route.path.length - 1) ? "#ffffff" : "#000000";
-        ctx.font = "bold 9px Arial";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText((index + 1).toString(), posX, posY);
+          // Dodajemy numerek kroku wewnątrz punktu
+          ctx.fillStyle = (index === 0 || index === route.path.length - 1) ? "#ffffff" : "#000000";
+          ctx.font = "bold 9px Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText((index + 1).toString(), posX, posY);
+        }
       });
     }
   }, [bgImage, route, step]); // Reagujemy na każdy 'step' animacji
