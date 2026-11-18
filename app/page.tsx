@@ -48,7 +48,7 @@ export default function NavigationMap() {
           clearInterval(interval); // Koniec trasy
           return prev;
         });
-      }, 350); // Szybkość pokazywania punktów (150ms)
+      }, 30); // Szybkość pokazywania punktów (150ms)
       
       return () => clearInterval(interval);
     } else {
@@ -116,16 +116,16 @@ export default function NavigationMap() {
         
         if (index === 0) {
           fillColor = "#10b981"; // Zielony Start
-          radius = 11;
+          radius = 14;
         } else if (index === route.path.length - 1 && step === route.path.length) {
           fillColor = "#ef4444"; // Czerwony Koniec
-          radius = 11;
+          radius = 14;
         } else if (place.kind === "stairs") {
           fillColor = "#a855f7"; // Fioletowe punkty dla węzłów schodów
           radius = 8;
         }
 
-        // Rysujemy kółko punktu
+        // Rysujemy kołka punktów tylko jeśli są to pierwszy lub ostatni punkt trasy
         if (index === 0 || index === route.path.length - 1) {
           ctx.beginPath();
           ctx.arc(posX, posY, radius, 0, 2 * Math.PI);
@@ -135,12 +135,17 @@ export default function NavigationMap() {
           ctx.lineWidth = 2;
           ctx.stroke();
 
-          // Dodajemy numerek kroku wewnątrz punktu
+          // Zamieniamy numerację punktów na tekst w środku kółka - start i koniec
           ctx.fillStyle = (index === 0 || index === route.path.length - 1) ? "#ffffff" : "#000000";
-          ctx.font = "bold 9px Arial";
+          ctx.font = "bold 7px Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText((index + 1).toString(), posX, posY);
+          if (index === 0) {
+            ctx.fillText("Start", posX, posY); // Start
+          } else {
+            ctx.fillText("Koniec", posX, posY);
+          }
+          
         }
       });
     }
